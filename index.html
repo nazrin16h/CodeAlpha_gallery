@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Images Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <h1 class="text-center text-2xl font-bold my-6">Images Gallery</h1>
+
+    <div id="filters" class="flex justify-center gap-4 my-4">
+        <button data-filter="all" class="filter-btn px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">All</button>
+        <button data-filter="galaxy" class="filter-btn px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Galaxy</button>
+        <button data-filter="planet" class="filter-btn px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Planet</button>
+        <button data-filter="star" class="filter-btn px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Star</button>
+    </div>
+    <div id="gallery" class="flex flex-wrap justify-center gap-4 px-4"></div>
+
+    <div id="lightbox"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[90%] rounded-lg" />
+    </div>
+
+
+
+    <script>
+        const imageData = [
+            { url: "img/galaxy1.jpg", category: "galaxy" },
+            { url: "img/planet1.jpg", category: "galaxy" },
+            { url: "img/star1.jpg", category: "star" },
+            { url: "img/nebula1.jpg", category: "nebula" },
+            { url: "img/saturn.jpg", category: "galaxy" },
+            { url: "img/milkway.jpg", category: "galaxy" },
+            { url: "img/salary2.jpg", category: "star" },
+            { url: "img/sombrero.jpeg", category: "galaxy" },
+            { url: "img/mars.jpeg", category: "planet" },
+            { url: "img/uranus.jpeg", category: "planet" },
+            { url: "img/mercury.jpeg", category: "planet" },
+            { url: "img/venus.jpeg", category: "planet" },
+            { url: "img/star2.jpg", category: "star" },
+            { url: "img/neptun1.jpeg", category: "planet" },
+            { url: "img/earth.jpeg", category: "planet" },
+            { url: "img/pluto.jpeg", category: "planet" },
+        ];
+
+        const gallery = document.getElementById("gallery");
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+        const buttons = document.querySelectorAll(".filter-btn");
+
+        function displayImages(filter) {
+            gallery.innerHTML = "";
+
+            imageData.forEach((item) => {
+                if (filter === "all" || item.category === filter) {
+                    const div = document.createElement("div");
+                    div.className = "overflow-hidden rounded-lg shadow-lg w-[280px] m-4";
+
+                    const img = document.createElement("img");
+                    img.src = item.url;
+                    img.className = "object-cover w-full h-64 hover:scale-105 transition-transform duration-300";
+
+                    div.appendChild(img);
+                    gallery.appendChild(div);
+                    img.addEventListener("click", () => {
+                        lightboxImg.src = item.url;
+                        lightbox.classList.remove("opacity-0", "pointer-events-none");
+                    });
+                }
+            });
+        }
+
+        displayImages("all");
+
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const filter = btn.getAttribute("data-filter");
+                displayImages(filter);
+            });
+        })
+        lightbox.addEventListener("click", () => {
+            lightbox.classList.add("opacity-0", "pointer-events-none");
+            lightboxImg.src = "";
+        });
+    </script>
+</body>
+
+</html>
